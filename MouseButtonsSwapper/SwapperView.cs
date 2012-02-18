@@ -7,9 +7,12 @@ namespace MouseButtonsSwapper
 {
 	internal class SwapperView : IDisposable
 	{
-		public SwapperView(Swapper swapper)
+		public SwapperView(Swapper swapper, Startup startup)
 		{
 			this.swapper = swapper;
+			this.startup = startup;
+
+
 			notifyIcon = new NotifyIcon
 			{
 				Icon = GetCurrentIcon(),
@@ -17,41 +20,48 @@ namespace MouseButtonsSwapper
 				Visible = true,
 			};
 			notifyIcon.MouseClick += notifyIcon_Click;
-			notifyIcon.MouseDoubleClick += (sender, args) => { SwapButtons(); notifyIconClickTimer.Enabled = false; };
+			notifyIcon.MouseDoubleClick += (sender, args) =>
+			{
+			    SwapButtons();
+				notifyIconDoubleClickTimer.Enabled = false;
+			};
 
 			contextMenu = CreateContextMenu();
 
-			notifyIconClickTimer = new Timer { Interval = SystemInformation.DoubleClickTime };
-			notifyIconClickTimer.Tick += notifyIconClickTimer_Tick;
+			notifyIconDoubleClickTimer = new Timer { Interval = SystemInformation.DoubleClickTime };
+			notifyIconDoubleClickTimer.Tick += NotifyIconDoubleClickTimerTick;
 		}
 
 
-		private void notifyIconClickTimer_Tick(object sender, EventArgs e)
+		private void NotifyIconDoubleClickTimerTick(object sender, EventArgs e)
 		{
-			notifyIconClickTimer.Enabled = false;
+			notifyIconDoubleClickTimer.Enabled = false;
+
+			ShowContextMenu();
+		}
+
+		private void ShowContextMenu()
+		{
+			runOnStartupMenuItem.Checked = startup.RunOnStartup;
 
 			notifyIcon.ContextMenu = contextMenu;
-			var mi = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-			mi.Invoke(notifyIcon, null);
+			var showContextMenuMethod = typeof(NotifyIcon).GetMethod("ShowContextMenu",
+				BindingFlags.Instance | BindingFlags.NonPublic);
+			showContextMenuMethod.Invoke(notifyIcon, null);
 			notifyIcon.ContextMenu = null;
 		}
 
 
 		private void notifyIcon_Click(object sender, MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left)
-				return;
-
-			// second button clicked:
-
-			if (notifyIconClickTimer.Enabled)
+			if (notifyIconDoubleClickTimer.Enabled) // Double click
 			{
-				notifyIconClickTimer.Enabled = false;
+				notifyIconDoubleClickTimer.Enabled = false;
 				SwapButtons();
 			}
-			else
+			else // First click - waiting for the second click
 			{
-				notifyIconClickTimer.Enabled = true;
+				notifyIconDoubleClickTimer.Enabled = true;
 			}
 		}
 
@@ -60,13 +70,21 @@ namespace MouseButtonsSwapper
 		{
 			var menu = new ContextMenu();
 
-			menu.MenuItems.Add(Resources.MenuSwap, (s, a) => SwapButtons()).Enabled = false;
+			menu.MenuItems.Add(Resources.MenuSwap, (s, a) => SwapButtons());
 			menu.MenuItems.Add("-");
+
 //			TODO:
 //			menu.MenuItems.Add(Resources.ChangeHotkey);
-//			menu.MenuItems.Add(Resources.RunOnLogin, (s, a) => ((MenuItem)s).Checked = !((MenuItem)s).Checked)
-//				.Checked = true;
-//			menu.MenuItems.Add("-");
+
+			runOnStartupMenuItem = new MenuItem(Resources.RunOnStartup);
+			runOnStartupMenuItem.Click += (s, a) =>
+			{
+				startup.RunOnStartup = ! runOnStartupMenuItem.Checked;
+   				runOnStartupMenuItem.Checked = ! runOnStartupMenuItem.Checked;
+			};
+			menu.MenuItems.Add(runOnStartupMenuItem);
+
+			menu.MenuItems.Add("-");
 			menu.MenuItems.Add(Resources.MenuExit, (s, a) => Application.Exit());
 
 			return menu;
@@ -91,8 +109,10 @@ namespace MouseButtonsSwapper
 
 
 		private readonly Swapper swapper;
+		private readonly Startup startup;
 		private readonly NotifyIcon notifyIcon;
-		private readonly Timer notifyIconClickTimer;
+		private readonly Timer notifyIconDoubleClickTimer;
 		private readonly ContextMenu contextMenu;
+		private MenuItem runOnStartupMenuItem;
 	}
 }

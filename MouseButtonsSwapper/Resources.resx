@@ -130,13 +130,13 @@
   <data name="MenuExit" xml:space="preserve">
     <value>&amp;Exit</value>
   </data>
-	<data name="IconTooltip">
-		<value xml:space="preserve">Mouse Buttons Swapper</value>
-	</data>
-	<data name="ChangeHotkey">
-		<value xml:space="preserve">Change hotkey...</value>
-	</data>
-	<data name="RunOnLogin">
-		<value xml:space="preserve">Run on login</value>
-	</data>
+  <data name="IconTooltip" xml:space="preserve">
+    <value>Mouse Buttons Swapper</value>
+  </data>
+  <data name="ChangeHotkey" xml:space="preserve">
+    <value>&amp;Hotkey...</value>
+  </data>
+  <data name="RunOnStartup" xml:space="preserve">
+    <value>&amp;Run on startup</value>
+  </data>
 </root>

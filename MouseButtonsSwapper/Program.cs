@@ -8,7 +8,7 @@ namespace MouseButtonsSwapper
 		[STAThread]
 		static void Main()
 		{
-			using (new SwapperView(new Swapper()))
+			using (new SwapperView(new Swapper(), new Startup()))
 				Application.Run();
 		}
 	}
