@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
+using MouseButtonsSwapper.Tools;
+using MouseButtonsSwapper.Tools.Hotkey;
 
 namespace MouseButtonsSwapper
 {
@@ -12,7 +14,6 @@ namespace MouseButtonsSwapper
 			this.swapper = swapper;
 			this.startup = startup;
 
-
 			notifyIcon = new NotifyIcon
 			{
 				Icon = GetCurrentIcon(),
@@ -22,14 +23,14 @@ namespace MouseButtonsSwapper
 			notifyIcon.MouseClick += notifyIcon_Click;
 			notifyIcon.MouseDoubleClick += (sender, args) =>
 			{
-			    SwapButtons();
 				notifyIconDoubleClickTimer.Enabled = false;
+				SwapButtons();
 			};
-
-			contextMenu = CreateContextMenu();
 
 			notifyIconDoubleClickTimer = new Timer { Interval = SystemInformation.DoubleClickTime };
 			notifyIconDoubleClickTimer.Tick += NotifyIconDoubleClickTimerTick;
+
+			contextMenu = CreateContextMenu();
 		}
 
 
@@ -73,9 +74,6 @@ namespace MouseButtonsSwapper
 			menu.MenuItems.Add(Resources.MenuSwap, (s, a) => SwapButtons());
 			menu.MenuItems.Add("-");
 
-//			TODO:
-//			menu.MenuItems.Add(Resources.ChangeHotkey);
-
 			runOnStartupMenuItem = new MenuItem(Resources.RunOnStartup);
 			runOnStartupMenuItem.Click += (s, a) =>
 			{
@@ -84,10 +82,43 @@ namespace MouseButtonsSwapper
 			};
 			menu.MenuItems.Add(runOnStartupMenuItem);
 
+			hotkeyMenuItem = new MenuItem(Resources.Hotkey, hotkeyMenuItem_Click);
+			menu.MenuItems.Add(hotkeyMenuItem);
+
 			menu.MenuItems.Add("-");
 			menu.MenuItems.Add(Resources.MenuExit, (s, a) => Application.Exit());
 
 			return menu;
+		}
+
+		private void hotkeyMenuItem_Click(object sender, EventArgs args)
+		{
+			ModifierKeys modifierKeys;
+			Keys key;
+			var useHotkey = PromptForHotkey(out modifierKeys, out key);
+
+			if (keyboardHook != null)
+			{
+				keyboardHook.Dispose();
+				keyboardHook = null;				
+			}
+
+			if (useHotkey)
+			{
+				keyboardHook = new KeyboardHook();
+				keyboardHook.KeyPressed += (s, a) => SwapButtons();
+				keyboardHook.RegisterHotKey(ModifierKeys.Alt | ModifierKeys.Control, Keys.M);
+			}
+
+			hotkeyMenuItem.Checked = useHotkey;
+		}
+
+		private bool PromptForHotkey(out ModifierKeys modifierKeys, out Keys key)
+		{
+			modifierKeys = ModifierKeys.Alt | ModifierKeys.Control;
+			key = Keys.M;
+
+			return true;
 		}
 
 		private Icon GetCurrentIcon()
@@ -105,6 +136,8 @@ namespace MouseButtonsSwapper
 		public void Dispose()
 		{
 			notifyIcon.Dispose();
+			if (keyboardHook != null)
+				keyboardHook.Dispose();
 		}
 
 
@@ -114,5 +147,8 @@ namespace MouseButtonsSwapper
 		private readonly Timer notifyIconDoubleClickTimer;
 		private readonly ContextMenu contextMenu;
 		private MenuItem runOnStartupMenuItem;
+		private MenuItem hotkeyMenuItem;
+
+		private KeyboardHook keyboardHook;
 	}
 }

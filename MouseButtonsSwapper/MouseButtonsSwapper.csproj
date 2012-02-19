@@ -79,7 +79,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Startup.cs" />
+    <Compile Include="Tools\Hotkey\KeyboardHook.cs" />
+    <Compile Include="Tools\Hotkey\KeyPressedEventArgs.cs" />
+    <Compile Include="Tools\Hotkey\ModifierKeys.cs" />
+    <Compile Include="Tools\Startup.cs" />
     <Compile Include="Swapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

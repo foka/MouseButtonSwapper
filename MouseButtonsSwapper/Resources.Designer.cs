@@ -63,9 +63,9 @@ namespace MouseButtonsSwapper {
         /// <summary>
         ///   Looks up a localized string similar to &amp;Hotkey....
         /// </summary>
-        internal static string ChangeHotkey {
+        internal static string Hotkey {
             get {
-                return ResourceManager.GetString("ChangeHotkey", resourceCulture);
+                return ResourceManager.GetString("Hotkey", resourceCulture);
             }
         }
         

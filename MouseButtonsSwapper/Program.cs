@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using MouseButtonsSwapper.Tools;
 
 namespace MouseButtonsSwapper
 {

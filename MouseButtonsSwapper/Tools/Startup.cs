@@ -5,7 +5,7 @@ using System.Linq;
 using IWshRuntimeLibrary;
 using File = System.IO.File;
 
-namespace MouseButtonsSwapper
+namespace MouseButtonsSwapper.Tools
 {
 	public class Startup
 	{
