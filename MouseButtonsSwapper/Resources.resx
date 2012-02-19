@@ -133,7 +133,7 @@
   <data name="IconTooltip" xml:space="preserve">
     <value>Mouse Buttons Swapper</value>
   </data>
-  <data name="ChangeHotkey" xml:space="preserve">
+  <data name="Hotkey" xml:space="preserve">
     <value>&amp;Hotkey...</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
