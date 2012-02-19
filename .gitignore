@@ -1,6 +1,5 @@
 bin
 obj
 *.user
-*.csproj.user
 *.suo
 _ReSharper*

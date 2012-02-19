@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>MouseSwapped.ico</ApplicationIcon>
+    <ApplicationIcon>MouseSwapped32.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -150,7 +150,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MouseSwapped.ico" />
+    <Content Include="MouseSwapped32.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

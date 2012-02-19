@@ -20,6 +20,6 @@ namespace MouseButtonsSwapper
 
 
 		[DllImport("user32.dll")]
-		private static extern Int32 SwapMouseButton(Int32 bSwap);
+		private static extern Int32 SwapMouseButton(int bSwap);
 	}
 }

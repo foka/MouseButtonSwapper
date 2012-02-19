@@ -2,17 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using IWshRuntimeLibrary;
 using File = System.IO.File;
 
 namespace MouseButtonsSwapper
 {
-	internal class Startup
+	public class Startup
 	{
-		public Startup()
+		public Startup(string targetExePath)
 		{
-			targetExePath = Application.ExecutablePath;
+			this.targetExePath = targetExePath;
 		}
 
 
@@ -46,7 +45,7 @@ namespace MouseButtonsSwapper
 			shortcut.TargetPath = targetExePath;
 			shortcut.WindowStyle = 1;
 			shortcut.Description = Path.GetFileNameWithoutExtension(targetExePath);
-			shortcut.WorkingDirectory = Path.GetDirectoryName(Application.StartupPath);
+			shortcut.WorkingDirectory = Path.GetDirectoryName(targetExePath);
 			shortcut.IconLocation = targetExePath;
 
 			shortcut.Save();

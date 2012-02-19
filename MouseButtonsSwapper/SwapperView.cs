@@ -54,12 +54,12 @@ namespace MouseButtonsSwapper
 
 		private void notifyIcon_Click(object sender, MouseEventArgs e)
 		{
-			if (notifyIconDoubleClickTimer.Enabled) // Double click
+			if (notifyIconDoubleClickTimer.Enabled) // The second of double click
 			{
 				notifyIconDoubleClickTimer.Enabled = false;
 				SwapButtons();
 			}
-			else // First click - waiting for the second click
+			else // The first click - start waiting for the second click
 			{
 				notifyIconDoubleClickTimer.Enabled = true;
 			}
