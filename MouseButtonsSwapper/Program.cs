@@ -11,6 +11,8 @@ namespace MouseButtonsSwapper
 		{
 			using (new SwapperView(new Swapper(), new Startup(Application.ExecutablePath)))
 				Application.Run();
+
+			Settings.Default.Save();
 		}
 	}
 }

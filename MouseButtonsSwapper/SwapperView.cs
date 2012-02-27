@@ -71,7 +71,8 @@ namespace MouseButtonsSwapper
 		{
 			var menu = new ContextMenu();
 
-			menu.MenuItems.Add(Resources.MenuSwap, (s, a) => SwapButtons());
+			menu.MenuItems.Add(Resources.MenuSwap, (s, a) => SwapButtons())
+				.DefaultItem = true;
 			menu.MenuItems.Add("-");
 
 			runOnStartupMenuItem = new MenuItem(Resources.RunOnStartup);
@@ -93,9 +94,11 @@ namespace MouseButtonsSwapper
 
 		private void hotkeyMenuItem_Click(object sender, EventArgs args)
 		{
-			ModifierKeys modifierKeys;
-			Keys key;
-			var useHotkey = PromptForHotkey(out modifierKeys, out key);
+			ModifierKeys? newModifiers;
+			Keys? newKey;
+			var hotkeyChanged = PromptForHotkey(out newModifiers, out newKey);
+			if (! hotkeyChanged)
+				return;
 
 			if (keyboardHook != null)
 			{
@@ -103,22 +106,60 @@ namespace MouseButtonsSwapper
 				keyboardHook = null;				
 			}
 
-			if (useHotkey)
+			Settings.Default.UseHotkey = newKey != null && newModifiers != null;
+			if (Settings.Default.UseHotkey)
 			{
+				Settings.Default.HotkeyModifiers = (int) newModifiers.Value;
+				Settings.Default.HotkeyKey = (int) newKey.Value;
+
 				keyboardHook = new KeyboardHook();
 				keyboardHook.KeyPressed += (s, a) => SwapButtons();
-				keyboardHook.RegisterHotKey(ModifierKeys.Alt | ModifierKeys.Control, Keys.M);
+				keyboardHook.RegisterHotKey(newModifiers.Value, newKey.Value);
+			}
+			else
+			{
+				Settings.Default.HotkeyModifiers = 0;
+				Settings.Default.HotkeyKey = 0;
 			}
 
-			hotkeyMenuItem.Checked = useHotkey;
+			hotkeyMenuItem.Checked = newKey != null && newModifiers != null;
 		}
 
-		private bool PromptForHotkey(out ModifierKeys modifierKeys, out Keys key)
+		/// <returns>true - user changed hotkey configuration in the dialog,
+		/// otherwise: false</returns>
+		private bool PromptForHotkey(out ModifierKeys? newModifiers, out Keys? newKey)
 		{
-			modifierKeys = ModifierKeys.Alt | ModifierKeys.Control;
-			key = Keys.M;
+			newModifiers = null;
+			newKey = null;
 
-			return true;
+			var modifiers = (ModifierKeys) Settings.Default.HotkeyModifiers;
+			var modifiersAsKeys = modifiers.HasFlag(ModifierKeys.Alt) ? Keys.Alt : 0;
+			modifiersAsKeys |= modifiers.HasFlag(ModifierKeys.Control) ? Keys.Control: 0;
+			modifiersAsKeys |= modifiers.HasFlag(ModifierKeys.Shift) ? Keys.Shift: 0;
+			using (var hotkeyForm = new HotkeyForm
+									{
+										Modifiers = modifiersAsKeys,
+										KeyCode = (Keys) Settings.Default.HotkeyKey,
+										HotkeyEnabled = Settings.Default.UseHotkey,
+									})
+			{
+				var dialogResult = hotkeyForm.ShowDialog();
+				if (dialogResult != DialogResult.OK)
+					return false;
+
+				if (! hotkeyForm.HotkeyEnabled)
+					return true;
+
+				newKey = hotkeyForm.KeyCode;
+				newModifiers = hotkeyForm.Modifiers.HasFlag(Keys.Alt) ? ModifierKeys.Alt : 0;
+				newModifiers |= hotkeyForm.Modifiers.HasFlag(Keys.Control) ? ModifierKeys.Control : 0;
+				newModifiers |= hotkeyForm.Modifiers.HasFlag(Keys.Shift) ? ModifierKeys.Shift : 0;
+				if (newModifiers == 0)
+					throw new InvalidOperationException("No modifier keys.");
+
+				return true;
+			}
+
 		}
 
 		private Icon GetCurrentIcon()
