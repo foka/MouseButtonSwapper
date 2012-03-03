@@ -31,6 +31,9 @@ namespace MouseButtonsSwapper
 			notifyIconDoubleClickTimer.Tick += NotifyIconDoubleClickTimerTick;
 
 			contextMenu = CreateContextMenu();
+
+			if (Settings.Default.UseHotkey)
+				RegisterHotkeyFromSettings();
 		}
 
 
@@ -112,9 +115,7 @@ namespace MouseButtonsSwapper
 				Settings.Default.HotkeyModifiers = (int) newModifiers.Value;
 				Settings.Default.HotkeyKey = (int) newKey.Value;
 
-				keyboardHook = new KeyboardHook();
-				keyboardHook.KeyPressed += (s, a) => SwapButtons();
-				keyboardHook.RegisterHotKey(newModifiers.Value, newKey.Value);
+				RegisterHotkeyFromSettings();
 			}
 			else
 			{
@@ -123,6 +124,14 @@ namespace MouseButtonsSwapper
 			}
 
 			hotkeyMenuItem.Checked = newKey != null && newModifiers != null;
+		}
+
+		private void RegisterHotkeyFromSettings()
+		{
+			keyboardHook = new KeyboardHook();
+			keyboardHook.KeyPressed += (s, a) => SwapButtons();
+			keyboardHook.RegisterHotKey((ModifierKeys) Settings.Default.HotkeyModifiers,
+				(Keys)Settings.Default.HotkeyKey);
 		}
 
 		/// <returns>true - user changed hotkey configuration in the dialog,
