@@ -33,7 +33,10 @@ namespace MouseButtonsSwapper
 			contextMenu = CreateContextMenu();
 
 			if (Settings.Default.UseHotkey)
+			{
+				hotkeyMenuItem.Checked = true;
 				RegisterHotkeyFromSettings();
+			}
 		}
 
 
@@ -123,7 +126,7 @@ namespace MouseButtonsSwapper
 				Settings.Default.HotkeyKey = 0;
 			}
 
-			hotkeyMenuItem.Checked = newKey != null && newModifiers != null;
+			hotkeyMenuItem.Checked = Settings.Default.UseHotkey;
 		}
 
 		private void RegisterHotkeyFromSettings()
