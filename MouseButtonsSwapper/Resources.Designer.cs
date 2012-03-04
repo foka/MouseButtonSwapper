@@ -61,15 +61,6 @@ namespace MouseButtonsSwapper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;Hotkey....
-        /// </summary>
-        internal static string Hotkey {
-            get {
-                return ResourceManager.GetString("Hotkey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Mouse Buttons Swapper.
         /// </summary>
         internal static string IconTooltip {
@@ -84,6 +75,24 @@ namespace MouseButtonsSwapper {
         internal static string MenuExit {
             get {
                 return ResourceManager.GetString("MenuExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Hotkey....
+        /// </summary>
+        internal static string MenuHotkey {
+            get {
+                return ResourceManager.GetString("MenuHotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Run on startup.
+        /// </summary>
+        internal static string MenuRunOnStartup {
+            get {
+                return ResourceManager.GetString("MenuRunOnStartup", resourceCulture);
             }
         }
         
@@ -107,15 +116,6 @@ namespace MouseButtonsSwapper {
             get {
                 object obj = ResourceManager.GetObject("MouseSwapped", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &amp;Run on startup.
-        /// </summary>
-        internal static string RunOnStartup {
-            get {
-                return ResourceManager.GetString("RunOnStartup", resourceCulture);
             }
         }
     }

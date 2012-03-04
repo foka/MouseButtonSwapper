@@ -33,10 +33,25 @@ namespace MouseButtonsSwapper
 			contextMenu = CreateContextMenu();
 
 			if (Settings.Default.UseHotkey)
-			{
-				hotkeyMenuItem.Checked = true;
 				RegisterHotkeyFromSettings();
+			UpdateHotkeyMenuItemFromSettings();
+		}
+
+		private void UpdateHotkeyMenuItemFromSettings()
+		{
+			var hotkeyMenuItemText = Resources.MenuHotkey;
+			if (Settings.Default.UseHotkey)
+			{
+				var modifiers = (ModifierKeys) Settings.Default.HotkeyModifiers;
+				hotkeyMenuItemText += " ("
+					+ (modifiers.HasFlag(ModifierKeys.Shift) ? "Shift + " : "")
+					+ (modifiers.HasFlag(ModifierKeys.Control) ? "Ctrl + " : "")
+					+ (modifiers.HasFlag(ModifierKeys.Alt) ? "Alt + " : "")
+					+ (Keys) Settings.Default.HotkeyKey
+					+ ")";
 			}
+			hotkeyMenuItem.Text = hotkeyMenuItemText;
+			hotkeyMenuItem.Checked = Settings.Default.UseHotkey;
 		}
 
 
@@ -81,7 +96,7 @@ namespace MouseButtonsSwapper
 				.DefaultItem = true;
 			menu.MenuItems.Add("-");
 
-			runOnStartupMenuItem = new MenuItem(Resources.RunOnStartup);
+			runOnStartupMenuItem = new MenuItem(Resources.MenuRunOnStartup);
 			runOnStartupMenuItem.Click += (s, a) =>
 			{
 				startup.RunOnStartup = ! runOnStartupMenuItem.Checked;
@@ -89,7 +104,8 @@ namespace MouseButtonsSwapper
 			};
 			menu.MenuItems.Add(runOnStartupMenuItem);
 
-			hotkeyMenuItem = new MenuItem(Resources.Hotkey, hotkeyMenuItem_Click);
+			hotkeyMenuItem = new MenuItem();
+			hotkeyMenuItem.Click += hotkeyMenuItem_Click;
 			menu.MenuItems.Add(hotkeyMenuItem);
 
 			menu.MenuItems.Add("-");
@@ -126,7 +142,7 @@ namespace MouseButtonsSwapper
 				Settings.Default.HotkeyKey = 0;
 			}
 
-			hotkeyMenuItem.Checked = Settings.Default.UseHotkey;
+			UpdateHotkeyMenuItemFromSettings();
 		}
 
 		private void RegisterHotkeyFromSettings()
