@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace MouseButtonsSwapper.Tools
+namespace MouseButtonSwapper.Tools
 {
 	public partial class HotkeyForm : Form
 	{

@@ -1,6 +1,6 @@
 using System;
 
-namespace MouseButtonsSwapper.Tools.Hotkey
+namespace MouseButtonSwapper.Tools.Hotkey
 {
 	/// <summary>
 	/// The enumeration of possible modifiers.

@@ -1,6 +1,6 @@
 using System;
 
-namespace MouseButtonsSwapper.Tools
+namespace MouseButtonSwapper.Tools
 {
 	public static class EnumExtenstion
 	{

@@ -1,4 +1,4 @@
-﻿namespace MouseButtonsSwapper.Tools
+﻿namespace MouseButtonSwapper.Tools
 {
 	partial class HotkeyForm
 	{

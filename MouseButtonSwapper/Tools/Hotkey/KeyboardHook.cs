@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace MouseButtonsSwapper.Tools.Hotkey
+namespace MouseButtonSwapper.Tools.Hotkey
 {
 	// Source: http://www.liensberger.it/web/blog/?p=207
 	internal sealed class KeyboardHook : IDisposable
