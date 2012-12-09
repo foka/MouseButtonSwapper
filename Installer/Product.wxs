@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?define BinOutput = "..\MouseButtonSwapper\bin\Debug" ?>
+
+	<Product Id="*" Name="Mouse Button Swapper" Language="1033" Version="1.0.0.0" Manufacturer="FokaSoft" UpgradeCode="60767dd1-73b8-4cae-898d-9430200240d0">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="Swapper" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Installer" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="MouseButtonSwapper.exe" Guid="{2ED88A3F-D7BA-4E34-8689-FD3664A4955B}">
+				<File Id="MouseButtonSwapper.exe" KeyPath="yes" Source="$(var.BinOutput)\MouseButtonSwapper.exe" />
+			</Component>
+			<Component Id="Interop.IWshRuntimeLibrary.dll" Guid="{0A7E6F62-5D58-4FD5-B107-7524C20695AC}">
+				<File Id="Interop.IWshRuntimeLibrary.dll" KeyPath="yes" Source="$(var.BinOutput)\Interop.IWshRuntimeLibrary.dll" />
+			</Component>
+			<Component Id="Interop.Shell32.dll" Guid="{B3B706E2-710C-4FE0-AE03-6B40C0478ED0}">
+				<File Id="Interop.Shell32.dll" KeyPath="yes" Source="$(var.BinOutput)\Interop.Shell32.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
