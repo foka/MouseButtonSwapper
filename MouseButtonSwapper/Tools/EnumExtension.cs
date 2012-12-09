@@ -4,7 +4,7 @@ namespace MouseButtonSwapper.Tools
 {
 	public static class EnumExtenstion
 	{
-		public static bool HasFlag(this Enum variable, Enum value)
+		public static bool HasFlag(Enum variable, Enum value)
 		{
 			if (variable == null)
 				return false;

@@ -16,7 +16,7 @@ namespace MouseButtonSwapper.Tools
 			Activated += (sender, args) =>
 			{
 				hotkeyTextBox.Enabled = enableHotkeyCheckBox.Checked;
-			    hotkeyTextBox.Focus();
+				hotkeyTextBox.Focus();
 			};
 		}
 
@@ -39,9 +39,9 @@ namespace MouseButtonSwapper.Tools
 
 		private void WriteHotkeyText()
 		{
-			var shift = Modifiers.HasFlag(Keys.Shift);
-			var control = Modifiers.HasFlag(Keys.Control);
-			var alt = Modifiers.HasFlag(Keys.Alt);
+			var shift = EnumExtenstion.HasFlag(Modifiers, Keys.Shift);
+			var control = EnumExtenstion.HasFlag(Modifiers, Keys.Control);
+			var alt = EnumExtenstion.HasFlag(Modifiers, Keys.Alt);
 
 			hotkeyTextBox.Text = (shift ? "Shift + " : "") + (control ? "Ctrl + " : "")
 				+ (alt ? "Alt + " : "") + KeyCode;
@@ -76,12 +76,12 @@ namespace MouseButtonSwapper.Tools
 			set { enableHotkeyCheckBox.Checked = value; }
 		}
 
-		private void okButton_Click(object sender, System.EventArgs e)
+		private void OkButtonClick(object sender, System.EventArgs e)
 		{
 			DialogResult = DialogResult.OK;
 		}
 
-		private void HotkeyForm_KeyDown(object sender, KeyEventArgs e)
+		private void HotkeyFormKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Escape)
 				DialogResult = DialogResult.Cancel;

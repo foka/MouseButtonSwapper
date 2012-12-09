@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using IWshRuntimeLibrary;
-using File = System.IO.File;
+using Microsoft.Win32;
 
 namespace MouseButtonSwapper.Tools
 {
 	public class Startup
 	{
+		private const string StartupRegistryValueName = "Mouse Button Swapper";
+
+
 		public Startup(string targetExePath)
 		{
 			this.targetExePath = targetExePath;
@@ -33,50 +32,26 @@ namespace MouseButtonSwapper.Tools
 
 		private bool StartupShortcutExists()
 		{
-			return GetStartupShortcuts().Any();
+			var shortcutExists = false;
+			InvokeStartupRegistryValueAction(key => shortcutExists = (null != key.GetValue(StartupRegistryValueName)));
+			return shortcutExists;
 		}
 
 		private void CreateStartupShortcut()
 		{
-			var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup),
-			                                Path.GetFileNameWithoutExtension(targetExePath) + ".lnk");
-			var shortcut = (IWshShortcut) new WshShellClass().CreateShortcut(shortcutPath);
-
-			shortcut.TargetPath = targetExePath;
-			shortcut.WindowStyle = 1;
-			shortcut.Description = Path.GetFileNameWithoutExtension(targetExePath);
-			shortcut.WorkingDirectory = Path.GetDirectoryName(targetExePath);
-			shortcut.IconLocation = targetExePath;
-
-			shortcut.Save();
+			InvokeStartupRegistryValueAction(key => key.SetValue(StartupRegistryValueName, targetExePath), true);
 		}
 
 		private void DeleteStartupShortcuts()
 		{
-			foreach (var shortcut in GetStartupShortcuts())
-				File.Delete(shortcut);
+			InvokeStartupRegistryValueAction(key => key.DeleteValue(StartupRegistryValueName), true);
 		}
 
-		private IEnumerable<string> GetStartupShortcuts()
+
+		private void InvokeStartupRegistryValueAction(Action<RegistryKey> startupRegistryValueAction, bool writable = false)
 		{
-			var allStartupShortcuts = Directory.GetFiles(
-				Environment.GetFolderPath(Environment.SpecialFolder.Startup), "*.lnk");
-
-			return allStartupShortcuts.Where(s => GetShortcutTargetFile(s)
-				.EndsWith(targetExePath, StringComparison.InvariantCultureIgnoreCase));
-		}
-
-		private string GetShortcutTargetFile(string shortcutFilename)
-		{
-			var pathOnly = Path.GetDirectoryName(shortcutFilename);
-			var filenameOnly = Path.GetFileName(shortcutFilename);
-
-			Shell32.Shell shell = new Shell32.ShellClass();
-			Shell32.Folder folder = shell.NameSpace(pathOnly);
-			Shell32.FolderItem folderItem = folder.ParseName(filenameOnly);
-
-			var link = (Shell32.ShellLinkObject)folderItem.GetLink;
-			return link.Path;
+			using (var startupRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", writable))
+				startupRegistryValueAction(startupRegistryKey);
 		}
 
 

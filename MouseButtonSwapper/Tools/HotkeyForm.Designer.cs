@@ -60,7 +60,7 @@
 			this.okButton.TabIndex = 2;
 			this.okButton.Text = "OK";
 			this.okButton.UseVisualStyleBackColor = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButtonClick);
 			// 
 			// HotkeyForm
 			// 
@@ -76,7 +76,7 @@
 			this.Name = "HotkeyForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Hotkey - Mouse Button Swapper";
-			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyForm_KeyDown);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyFormKeyDown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -44,9 +44,9 @@ namespace MouseButtonSwapper
 			{
 				var modifiers = (ModifierKeys) Settings.Default.HotkeyModifiers;
 				hotkeyMenuItemText += " ("
-					+ (modifiers.HasFlag(ModifierKeys.Shift) ? "Shift + " : "")
-					+ (modifiers.HasFlag(ModifierKeys.Control) ? "Ctrl + " : "")
-					+ (modifiers.HasFlag(ModifierKeys.Alt) ? "Alt + " : "")
+					+ (EnumExtenstion.HasFlag(modifiers, ModifierKeys.Shift) ? "Shift + " : "")
+					+ (EnumExtenstion.HasFlag(modifiers, ModifierKeys.Control) ? "Ctrl + " : "")
+					+ (EnumExtenstion.HasFlag(modifiers, ModifierKeys.Alt) ? "Alt + " : "")
 					+ (Keys) Settings.Default.HotkeyKey
 					+ ")";
 			}
@@ -161,9 +161,9 @@ namespace MouseButtonSwapper
 			newKey = null;
 
 			var modifiers = (ModifierKeys) Settings.Default.HotkeyModifiers;
-			var modifiersAsKeys = modifiers.HasFlag(ModifierKeys.Alt) ? Keys.Alt : 0;
-			modifiersAsKeys |= modifiers.HasFlag(ModifierKeys.Control) ? Keys.Control: 0;
-			modifiersAsKeys |= modifiers.HasFlag(ModifierKeys.Shift) ? Keys.Shift: 0;
+			var modifiersAsKeys = EnumExtenstion.HasFlag(modifiers, ModifierKeys.Alt) ? Keys.Alt : 0;
+			modifiersAsKeys |= EnumExtenstion.HasFlag(modifiers, ModifierKeys.Control) ? Keys.Control: 0;
+			modifiersAsKeys |= EnumExtenstion.HasFlag(modifiers, ModifierKeys.Shift) ? Keys.Shift: 0;
 			using (var hotkeyForm = new HotkeyForm
 									{
 										Modifiers = modifiersAsKeys,
@@ -179,9 +179,9 @@ namespace MouseButtonSwapper
 					return true;
 
 				newKey = hotkeyForm.KeyCode;
-				newModifiers = hotkeyForm.Modifiers.HasFlag(Keys.Alt) ? ModifierKeys.Alt : 0;
-				newModifiers |= hotkeyForm.Modifiers.HasFlag(Keys.Control) ? ModifierKeys.Control : 0;
-				newModifiers |= hotkeyForm.Modifiers.HasFlag(Keys.Shift) ? ModifierKeys.Shift : 0;
+				newModifiers = EnumExtenstion.HasFlag(hotkeyForm.Modifiers, Keys.Alt) ? ModifierKeys.Alt : 0;
+				newModifiers |= EnumExtenstion.HasFlag(hotkeyForm.Modifiers, Keys.Control) ? ModifierKeys.Control : 0;
+				newModifiers |= EnumExtenstion.HasFlag(hotkeyForm.Modifiers, Keys.Shift) ? ModifierKeys.Shift : 0;
 				if (newModifiers == 0)
 					throw new InvalidOperationException("No modifier keys.");
 
