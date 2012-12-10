@@ -38,26 +38,31 @@
 			// 
 			this.hotkeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.hotkeyTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.hotkeyTextBox.Location = new System.Drawing.Point(34, 9);
 			this.hotkeyTextBox.Name = "hotkeyTextBox";
-			this.hotkeyTextBox.Size = new System.Drawing.Size(155, 20);
+			this.hotkeyTextBox.Size = new System.Drawing.Size(199, 20);
 			this.hotkeyTextBox.TabIndex = 1;
 			// 
 			// enableHotkeyCheckBox
 			// 
 			this.enableHotkeyCheckBox.AutoSize = true;
+			this.enableHotkeyCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.enableHotkeyCheckBox.Location = new System.Drawing.Point(12, 12);
 			this.enableHotkeyCheckBox.Name = "enableHotkeyCheckBox";
-			this.enableHotkeyCheckBox.Size = new System.Drawing.Size(15, 14);
+			this.enableHotkeyCheckBox.Size = new System.Drawing.Size(12, 11);
 			this.enableHotkeyCheckBox.TabIndex = 0;
 			this.enableHotkeyCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// okButton
 			// 
-			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.okButton.Location = new System.Drawing.Point(196, 9);
+			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.okButton.Location = new System.Drawing.Point(12, 35);
 			this.okButton.Name = "okButton";
-			this.okButton.Size = new System.Drawing.Size(37, 20);
+			this.okButton.Size = new System.Drawing.Size(221, 22);
 			this.okButton.TabIndex = 2;
 			this.okButton.Text = "OK";
 			this.okButton.UseVisualStyleBackColor = true;
@@ -68,7 +73,7 @@
 			this.AcceptButton = this.okButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(245, 38);
+			this.ClientSize = new System.Drawing.Size(245, 65);
 			this.Controls.Add(this.okButton);
 			this.Controls.Add(this.enableHotkeyCheckBox);
 			this.Controls.Add(this.hotkeyTextBox);

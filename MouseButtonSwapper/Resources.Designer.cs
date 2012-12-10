@@ -97,7 +97,7 @@ namespace MouseButtonSwapper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;Swap.
+        ///   Looks up a localized string similar to &amp;Swap mouse buttons.
         /// </summary>
         internal static string MenuSwap {
             get {
