@@ -168,7 +168,6 @@ namespace MouseButtonSwapper
 									{
 										Modifiers = modifiersAsKeys,
 										KeyCode = (Keys) Settings.Default.HotkeyKey,
-										HotkeyEnabled = Settings.Default.UseHotkey,
 									})
 			{
 				var dialogResult = hotkeyForm.ShowDialog();

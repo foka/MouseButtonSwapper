@@ -10,39 +10,42 @@ namespace MouseButtonSwapper.Tools
 			hotkeyTextBox.KeyPress += (sender, args) => args.Handled = true;
 			hotkeyTextBox.KeyDown += HotkeyTextBoxOnKeyDown;
 
-			enableHotkeyCheckBox.CheckedChanged += (o, eventArgs) =>
-				hotkeyTextBox.Enabled = enableHotkeyCheckBox.Checked;
-
-			Activated += (sender, args) =>
-			{
-				hotkeyTextBox.Enabled = enableHotkeyCheckBox.Checked;
-				hotkeyTextBox.Focus();
-			};
+			Activated += (sender, args) => hotkeyTextBox.Focus();
 		}
 
 
 		private void HotkeyTextBoxOnKeyDown(object sender, KeyEventArgs e)
 		{
-			if (! enableHotkeyCheckBox.Checked)
-				return;
 			if (e.KeyCode == KeyCode && e.Modifiers == Modifiers)
 				return;
+			if (e.Modifiers == Keys.None)
+			{
+				if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
+				{
+					KeyCode = Keys.None;
+					Modifiers = Keys.None;
+				}
+			}
+			else
+			{
+				KeyCode = e.KeyCode;
+				Modifiers = e.Modifiers;
+			}
 
-			KeyCode = e.KeyCode;
-			Modifiers = e.Modifiers;
-
-			WriteHotkeyText();
+			OnKeysChanged();
 
 			e.Handled = true;
 		}
 
 
-		private void WriteHotkeyText()
+		private void OnKeysChanged()
 		{
+			unbindButton.Enabled = KeyCode != Keys.None;
+
+			// Write keys
 			var shift = EnumExtenstion.HasFlag(Modifiers, Keys.Shift);
 			var control = EnumExtenstion.HasFlag(Modifiers, Keys.Control);
 			var alt = EnumExtenstion.HasFlag(Modifiers, Keys.Alt);
-
 			hotkeyTextBox.Text = (shift ? "Shift + " : "") + (control ? "Ctrl + " : "")
 				+ (alt ? "Alt + " : "") + KeyCode;
 		}
@@ -55,7 +58,7 @@ namespace MouseButtonSwapper.Tools
 			set
 			{
 				modifiers = value;
-				WriteHotkeyText();
+				OnKeysChanged();
 			}
 		}
 
@@ -66,14 +69,13 @@ namespace MouseButtonSwapper.Tools
 			set
 			{
 				keyCode = value;
-				WriteHotkeyText();
+				OnKeysChanged();
 			}
 		}
 
 		public bool HotkeyEnabled
 		{
-			get { return enableHotkeyCheckBox.Checked; }
-			set { enableHotkeyCheckBox.Checked = value; }
+			get { return KeyCode != Keys.None; }
 		}
 
 		private void OkButtonClick(object sender, System.EventArgs e)
@@ -85,6 +87,13 @@ namespace MouseButtonSwapper.Tools
 		{
 			if (e.KeyCode == Keys.Escape)
 				DialogResult = DialogResult.Cancel;
+		}
+
+		private void UnbindButtonClick(object sender, System.EventArgs e)
+		{
+			KeyCode = Keys.None;
+			Modifiers = Keys.None;
+			DialogResult = DialogResult.OK;
 		}
 	}
 
