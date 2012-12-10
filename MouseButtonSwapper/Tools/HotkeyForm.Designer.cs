@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HotkeyForm));
 			this.hotkeyTextBox = new System.Windows.Forms.TextBox();
 			this.enableHotkeyCheckBox = new System.Windows.Forms.CheckBox();
 			this.okButton = new System.Windows.Forms.Button();
@@ -72,6 +73,7 @@
 			this.Controls.Add(this.enableHotkeyCheckBox);
 			this.Controls.Add(this.hotkeyTextBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
 			this.Name = "HotkeyForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
