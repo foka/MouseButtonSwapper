@@ -139,4 +139,13 @@
   <data name="MenuRunOnStartup" xml:space="preserve">
     <value>&amp;Run on startup</value>
   </data>
+  <data name="LeftHanded" xml:space="preserve">
+    <value>Left-handed</value>
+  </data>
+  <data name="RightHanded" xml:space="preserve">
+    <value>Right-handed</value>
+  </data>
+  <data name="SwappedEventBaloonTitle" xml:space="preserve">
+    <value>Mouse button swapped</value>
+  </data>
 </root>

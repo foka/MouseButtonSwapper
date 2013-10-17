@@ -148,7 +148,12 @@ namespace MouseButtonSwapper
 		private void RegisterHotkeyFromSettings()
 		{
 			keyboardHook = new KeyboardHook();
-			keyboardHook.KeyPressed += (s, a) => SwapButtons();
+			keyboardHook.KeyPressed += (s, a) =>
+			{
+				SwapButtons();
+				var handedness = swapper.IsSwapped ? Resources.LeftHanded : Resources.RightHanded;
+				notifyIcon.ShowBalloonTip(2000, Resources.SwappedEventBaloonTitle, handedness, ToolTipIcon.Info);
+			};
 			keyboardHook.RegisterHotKey((ModifierKeys) Settings.Default.HotkeyModifiers,
 				(Keys)Settings.Default.HotkeyKey);
 		}
